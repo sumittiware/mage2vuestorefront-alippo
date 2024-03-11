@@ -6,8 +6,8 @@ class AbstractAlippoAdapter extends AbstractAdapter {
   constructor(config) {
     super(config);
 
-    let Magento2Client = require("./magento2-rest-client").Magento2Client;
-    this.api = Magento2Client(this.config.magento);
+    let AlippoClient = require("./alippo-rest-client").AlippoClient;
+    this.api = AlippoClient(this.config.alippo);
   }
 
   getEntityType() {
@@ -20,17 +20,6 @@ class AbstractAlippoAdapter extends AbstractAdapter {
 
   validateConfig(config) {
     super.validateConfig(config);
-
-    if (
-      !config["magento"]["url"] ||
-      !config["magento"]["consumerKey"] ||
-      !config["magento"]["consumerSecret"] ||
-      !config["magento"]["accessToken"] ||
-      !config["magento"]["accessTokenSecret"]
-    )
-      throw Error(
-        "magento.{url,consumerKey,consumerSecret,accessToken,accessTokenSecret} must be set in config"
-      );
   }
 
   isValidFor(entity_type) {
@@ -54,4 +43,4 @@ class AbstractAlippoAdapter extends AbstractAdapter {
   }
 }
 
-module.exports = AbstractMagentoAdapter;
+module.exports = AbstractAlippoAdapter;

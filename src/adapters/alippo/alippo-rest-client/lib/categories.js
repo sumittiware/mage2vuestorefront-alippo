@@ -1,11 +1,11 @@
 var util = require("util");
 
 // TODO : update API's here based on the alippo's requirements
-module.exports = function (restClient) {
+module.exports = function (restClient, endpoint) {
   var module = {};
 
   module.list = function () {
-    return restClient.get("/categories");
+    return restClient.get("custom/categories");
   };
 
   module.getSingle = function (categoryId) {

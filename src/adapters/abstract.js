@@ -1,5 +1,6 @@
 "use strict";
 
+const logger = require("./alippo/alippo-rest-client/lib/log");
 const AdapterFactory = require("./factory");
 const Redis = require("redis");
 
@@ -65,8 +66,9 @@ class AbstractAdapter {
   run(context) {
     this.current_context = context;
 
-    if (!this.current_context.transaction_key)
+    if (!this.current_context.transaction_key) {
       this.current_context.transaction_key = new Date().getTime(); // the key used to filter out records NOT ADDED by this import
+    }
 
     this.db.connect(() => {
       logger.info("Connected correctly to server");
@@ -115,11 +117,6 @@ class AbstractAdapter {
 
   prepareItems(items) {
     if (!items) return items;
-
-    if (items.total_count) this.total_count = items.total_count;
-
-    if (!Array.isArray(items)) items = new Array(items);
-
     return items;
   }
 
@@ -135,7 +132,7 @@ class AbstractAdapter {
       logger.error("No items given to processItems call!");
       return;
     }
-
+    logger.info(`Processing items : `, JSON.stringify(items));
     let count = items.length;
     let index = 0;
 
@@ -163,17 +160,15 @@ class AbstractAdapter {
           );
           logger.info(`Tasks count = ${this.tasks_count}`);
 
-          if (this.update_document)
+          // TODO : Handle this to our use case, we want to push only doc two index
+          // One is in the search_index and other is in the collection
+
+          if (this.update_document) {
             this.db.updateDocument(
               this.getCollectionName(),
               this.normalizeDocumentFormat(item)
             );
-          else logger.debug("Skipping database update");
-
-          if (item.children_data && item.children_data.length > 0) {
-            logger.info(`--L:${level} Processing child items ...`);
-            this.processItems(item.children_data, level + 1);
-          }
+          } else logger.debug("Skipping database update");
 
           if (this.tasks_count == 0 && !this.use_paging) {
             // this is the last item!

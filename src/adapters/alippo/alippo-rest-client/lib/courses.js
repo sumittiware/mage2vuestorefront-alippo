@@ -1,11 +1,28 @@
 var util = require("util");
+const logger = require("./log");
 
 // TODO : update API's here based on the alippo's requirements for courses
-module.exports = function (restClient) {
+module.exports = function (restClient, endpoint) {
   var module = {};
 
-  module.list = function () {
-    return restClient.get("/categories");
+  module.list = function (query) {
+    return new Promise((resolve, reject) => {
+      restClient
+        .get(`ui/page/COURSE_ROOT_PAGE?${query}`)
+        .then((result) => {
+          let coursesData = result.sections[0].payload.courses;
+
+          res = {
+            items: coursesData.content,
+            total_count: coursesData.totalElements,
+          };
+          logger.info("Courses list", JSON.stringify(res));
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   };
 
   module.getSingle = function (categoryId) {

@@ -9,8 +9,8 @@ module.exports.AlippoClient = function (options) {
   var instance = {};
 
   var client = RestClient(options);
-  instance.categories = categories(client);
-  instance.courses = courses(client);
+  instance.categories = categories(client, options.categoryListUrl);
+  instance.courses = courses(client, options.productListUrl);
 
   return instance;
 };

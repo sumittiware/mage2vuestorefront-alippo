@@ -2,6 +2,21 @@
   "name": "alippo-rest-client",
   "version": "1.0.0",
   "description": "Rest client to interact with alippo server",
+  "bundleDependencies": false,
+  "dependencies": {
+    "humps": "^1.1.0",
+    "oauth-1.0a": "^1.0.1",
+    "request": "^2.72.0",
+    "winston": "^2.2.0"
+  },
+  "deprecated": false,
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
+  },
+  "directories": {
+    "lib": "./lib"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

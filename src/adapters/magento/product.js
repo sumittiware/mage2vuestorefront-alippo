@@ -168,7 +168,7 @@ class ProductAdapter extends AbstractMagentoAdapter {
                           .formatted_prices;
                         delete productAdditionalInfo.price_info
                           .extension_attributes;
-                        // delete productAdditionalInfo.price_info.special_price
+                        // delete product AdditionalInfo.price_info.special_price
                         product = Object.assign(
                           product,
                           productAdditionalInfo.price_info
@@ -942,6 +942,9 @@ class ProductAdapter extends AbstractMagentoAdapter {
     });
     return resultItem;
   }
+
+  // make a simple item that takes the
+  normalizeDocumentFormatForSearch(item) {}
 }
 
 module.exports = ProductAdapter;

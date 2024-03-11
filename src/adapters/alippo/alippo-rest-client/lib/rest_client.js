@@ -12,18 +12,6 @@ module.exports.RestClient = function (options) {
   var instance = {};
 
   var servelrUrl = options.url;
-  var apiVersion = options.version;
-  var oauth = OAuth({
-    consumer: {
-      public: options.consumerKey,
-      secret: options.consumerSecret,
-    },
-    signature_method: "HMAC-SHA1",
-  });
-  var token = {
-    public: options.accessToken,
-    secret: options.accessTokenSecret,
-  };
 
   function apiCall(request_data) {
     logger.debug(
@@ -34,7 +22,9 @@ module.exports.RestClient = function (options) {
         {
           url: request_data.url,
           method: request_data.method,
-          headers: oauth.toHeader(oauth.authorize(request_data, token)),
+          headers: {
+            os: "web",
+          },
           json: true,
           body: request_data.body,
         },
@@ -55,8 +45,6 @@ module.exports.RestClient = function (options) {
             logger.error("API call failed: " + errorMessage);
             reject(errorMessage);
           }
-          //                var bodyCamelized = humps.camelizeKeys(body);
-          //                resolve(bodyCamelized);
           resolve(body);
         }
       );
@@ -95,7 +83,7 @@ module.exports.RestClient = function (options) {
   };
 
   function createUrl(resourceUrl) {
-    return servelrUrl + "/" + apiVersion + resourceUrl;
+    return servelrUrl + "/" + resourceUrl;
   }
 
   instance.post = function (resourceUrl, data) {

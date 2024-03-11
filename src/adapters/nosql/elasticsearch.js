@@ -2,6 +2,7 @@
 const AbstractNosqlAdapter = require("./abstract");
 const elasticsearch = require("@elastic/elasticsearch");
 const AgentKeepAlive = require("agentkeepalive");
+const { log } = require("magento2-rest-client/lib/log");
 const AgentKeepAliveHttps = require("agentkeepalive").HttpsAgent;
 
 class ElasticsearchAdapter extends AbstractNosqlAdapter {
@@ -54,7 +55,7 @@ class ElasticsearchAdapter extends AbstractNosqlAdapter {
    */
   close() {
     // switched to global singleton
-    //this.db.close();
+    this.db.close();
   }
 
   /**
